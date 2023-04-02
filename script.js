@@ -162,9 +162,8 @@ function init() {
 
 		selectedItems.push(item);
 		sessionStorage.setItem(storageKey, JSON.stringify(selectedItems));
-		displayBucketItems(); // Update the bucket items display after adding a new item
+		updateDisplayItems(storageKey); // Update the bucket items display after adding a new item
 	}
-
 	function filterItems(searchKey, searchText) {
 		return items.filter((item) => {
 			const value = item[searchKey];
@@ -175,18 +174,19 @@ function init() {
 			}
 		});
 	}
-	function displayBucketItems() {
-		const bucketItems = JSON.parse(sessionStorage.getItem(storageKey)) || [];
-		const bucketDiv = document.getElementById('bucket');
-		bucketDiv.innerHTML = '';
 
-		bucketItems.forEach((item) => {
+	function updateDisplayItems(key) {
+		const items = JSON.parse(sessionStorage.getItem(key)) || [];
+		const div = document.getElementById(key);
+		div.innerHTML = '';
+
+		items.forEach((item) => {
 			const itemDiv = document.createElement('div');
 			itemDiv.textContent = `${item.id}: ${item.name}`;
-			bucketDiv.appendChild(itemDiv);
+			div.appendChild(itemDiv);
 		});
 	}
-	function displayCartItems() {
+	function updateDisplayItems(cartStorageKey) {
 		const bucketItems =
 			JSON.parse(sessionStorage.getItem(cartStorageKey)) || [];
 		const bucketDiv = document.getElementById('cart');
@@ -225,19 +225,19 @@ function init() {
 			cartStorageKey,
 			JSON.stringify([...cartItems, ...bucketItems])
 		);
-		displayCartItems();
+		updateDisplayItems(cartStorageKey);
 		clearBucket();
 	}
 	function clearBucket() {
 		sessionStorage.removeItem(storageKey);
-		displayBucketItems();
+		updateDisplayItems(storageKey);
 	}
 	function clearCart() {
 		sessionStorage.removeItem(cartStorageKey);
 		refreshCart();
 	}
 	function refreshCart() {
-		displayCartItems();
+		updateDisplayItems(cartStorageKey);
 	}
 
 	const searchKey = document.getElementById('searchKey');
@@ -247,7 +247,7 @@ function init() {
 	const clearBucketBtn = document.getElementById('clearBucket');
 	const refreshCartBtn = document.getElementById('refreshCart');
 
-	displayBucketItems();
+	updateDisplayItems(storageKey);
 	addToOrderBtn.addEventListener('click', addToCart);
 	clearBucketBtn.addEventListener('click', clearBucket);
 	clearCartBtn.addEventListener('click', clearCart);
