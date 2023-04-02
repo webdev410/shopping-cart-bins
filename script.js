@@ -186,19 +186,7 @@ function init() {
 			div.appendChild(itemDiv);
 		});
 	}
-	function updateDisplayItems(cartStorageKey) {
-		const bucketItems =
-			JSON.parse(sessionStorage.getItem(cartStorageKey)) || [];
-		const bucketDiv = document.getElementById('cart');
-		bucketDiv.innerHTML = '';
 
-		bucketItems.forEach((item) => {
-			const itemDiv = document.createElement('div');
-			const content = document.createElement('p');
-			itemDiv.textContent = `${item.id}: ${item.name}`;
-			bucketDiv.appendChild(itemDiv);
-		});
-	}
 	function displayItems(filteredItems) {
 		const resultsDiv = document.getElementById('results');
 		resultsDiv.innerHTML = '';
