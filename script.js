@@ -212,7 +212,6 @@ function init() {
 			}
 		});
 	}
-
 	function displayItems(filteredItems) {
 		const resultsDiv = document.getElementById('results');
 		resultsDiv.innerHTML = '';
@@ -285,6 +284,19 @@ function init() {
 		sessionStorage.clear();
 		window.location.reload();
 	}
+	function toggleSearch() {
+		const searchDiv = document.getElementById('search');
+		searchDiv.classList.toggle('hidden');
+		if (searchDiv.classList.contains('hidden')) {
+			overlayOff();
+		} else overlayOn();
+	}
+	function overlayOn() {
+		document.getElementById('overlay').style.display = 'block';
+	}
+	function overlayOff() {
+		document.getElementById('overlay').style.display = 'none';
+	}
 	const searchKey = document.getElementById('searchKey');
 	const searchInput = document.getElementById('searchInput');
 	const addToOrderBtn = document.getElementById('addToOrder');
@@ -293,7 +305,9 @@ function init() {
 	const refreshCartBtn = document.getElementById('refreshCart');
 	const addToBasketBtn = document.getElementById('addToBasket');
 	const resetBtn = document.getElementById('reset');
+	const searchBtn = document.getElementById('searchBtn');
 	const clearBasketBtn = document.getElementById('clearBasket');
+	const overlay = document.getElementById('overlay');
 
 	updateDisplayItems(storageKey);
 	updateDisplayItems(cartStorageKey);
@@ -305,7 +319,18 @@ function init() {
 	addToBasketBtn.addEventListener('click', addToBasket);
 	resetBtn.addEventListener('click', reset);
 	clearBasketBtn.addEventListener('click', clearBasket);
+	searchBtn.addEventListener('click', toggleSearch);
 	searchKey.addEventListener('change', updateFilteredItems);
 	searchInput.addEventListener('input', updateFilteredItems);
+	overlay.addEventListener('click', toggleSearch);
+
+	// toggle search on command + k
+	document.addEventListener('keydown', function (event) {
+		if (event.metaKey && event.keyCode === 75) {
+			// The Command + K shortcut was pressed
+			// Do something here
+			toggleSearch();
+		}
+	});
 }
 init();
