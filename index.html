@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Filter Array of Objects</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+		.results {
+			padding: 3px
+		}
+
+		.results:hover {
+			background-color: #a5a5a596
+		}
+
+		.card {
+			width: 50%;
+			margin: 0 auto;
+			margin-top: 20px;
+			padding: 10px;
+			border: 1px solid #000;
+			position: relative;
+		}
+
+		/* #addToOrder {
+			position: absolute;
+			right: 10px;
+			top: 10px;
+		} */
+
+		.btnContainer {
+			display: flex;
+			justify-content: space-around;
+		}
+
+
+		.btns:hover {
+			background-color: #a5a5a596
+		}
+
+		#results {
+			background-color: wheat;
+		}
+	</style>
+</head>
+<body>
+	<!-- Bucket and Cart -->
+	<div class="d-flex justify-content-around">
+		<div class="card">
+			<h3>bucket</h3>
+			<div class="btnContainer">
+
+				<button id="addToOrder" class='btn btns'>Add to Order</button>
+				<button id="clearBucket" class='btn btns'>Clear Bucket</button>
+			</div>
+			<div id="bucket"></div>
+		</div>
+
+		<div class="card">
+			<h3>Cart</h3>
+			<div class="btnContainer">
+				<button id="clearCart" class='btn btns'>Clear Cart</button>
+				<button id="refreshCart" class='btn btns'>Refresh Cart</button>
+			</div>
+			<div id="cart"></div>
+		</div>
+	</div>
+	<!-- Search -->
+	<div>
+		<select id="searchKey"> </select>
+		<input type="text" id="searchInput" placeholder="Search">
+		<div id="results"></div>
+	</div>
+
+
+
+	<script src="./script.js">
+
+	</script>
+</body>
+</html>
