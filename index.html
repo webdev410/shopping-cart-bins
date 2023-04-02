@@ -19,7 +19,7 @@
 		.card {
 			width: 50%;
 			margin: 0 auto;
-			margin-top: 20px;
+			margin: 20px;
 			padding: 10px;
 			border: 1px solid #000;
 			position: relative;
@@ -36,6 +36,11 @@
 			justify-content: space-around;
 		}
 
+		.bin {
+			border: 1px solid black;
+			margin-top: 3px;
+			padding: 3px;
+		}
 
 		.btns:hover {
 			background-color: #a5a5a596
@@ -58,16 +63,30 @@
 			</div>
 			<div id="bucket"></div>
 		</div>
-
 		<div class="card">
 			<h3>Cart</h3>
 			<div class="btnContainer">
 				<button id="clearCart" class='btn btns'>Clear Cart</button>
 				<button id="refreshCart" class='btn btns'>Refresh Cart</button>
+				<button id="addToBasket" class='btn btns'>Add To Basket</button>
 			</div>
 			<div id="cart"></div>
 		</div>
+		<div class="card">
+			<h3>Basket</h3>
+			<div class="btnContainer">
+				<button id="reset" class='btn btns'>Reset</button>
+				<button id="clearBasket" class='btn btns'>Clear Basket</button>
+				<!-- <button id="clearCart" class='btn btns'>Clear Cart</button> -->
+				<!-- <button id="refreshCart" class='btn btns'>Refresh Cart</button> -->
+				<!-- <button id="addToBasket" class='btn btns'>Add To Basket</button> -->
+			</div>
+			<div id="basket"></div>
+		</div>
 	</div>
+
+
+
 	<!-- Search -->
 	<div>
 		<select id="searchKey"> </select>

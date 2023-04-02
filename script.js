@@ -143,6 +143,8 @@ const items = [
 function init() {
 	const storageKey = 'bucket';
 	const cartStorageKey = 'cart';
+	const basketStorageKey = 'basket';
+
 	function createOptions() {
 		const searchKey = document.getElementById('searchKey');
 		// const searchInput = document.getElementById("searchInput");
@@ -154,10 +156,10 @@ function init() {
 			searchKey.appendChild(option);
 		});
 	}
-	createOptions();
-	function addToSessionStorage(item) {
-		const storageKey = 'bucket';
 
+	createOptions();
+
+	function addToSessionStorage(item) {
 		let selectedItems = JSON.parse(sessionStorage.getItem(storageKey)) || [];
 
 		selectedItems.push(item);
@@ -179,11 +181,35 @@ function init() {
 		const items = JSON.parse(sessionStorage.getItem(key)) || [];
 		const div = document.getElementById(key);
 		div.innerHTML = '';
-
 		items.forEach((item) => {
-			const itemDiv = document.createElement('div');
-			itemDiv.textContent = `${item.id}: ${item.name}`;
-			div.appendChild(itemDiv);
+			if (key === basketStorageKey) {
+				console.log(item);
+				// create bin container
+				const binDiv = document.createElement('div');
+				const title = document.createElement('h3');
+				const subtitle = document.createElement('h5');
+				title.textContent = `Bin: ${item.bin}`;
+				subtitle.textContent = `Items: ${item.items.length}`;
+				binDiv.classList.add('bin');
+				binDiv.appendChild(title);
+				binDiv.appendChild(subtitle);
+				div.appendChild(binDiv);
+
+				// create items container
+				const itemsContainer = document.createElement('div');
+				itemsContainer.classList.add('items-container');
+
+				item.items.forEach((item) => {
+					const itemDiv = document.createElement('div');
+					itemDiv.textContent = `${item.id}: ${item.name}`;
+					itemsContainer.appendChild(itemDiv);
+					binDiv.appendChild(itemsContainer);
+				});
+			} else {
+				const itemDiv = document.createElement('div');
+				itemDiv.textContent = `${item.id}: ${item.name}`;
+				div.appendChild(itemDiv);
+			}
 		});
 	}
 
@@ -209,9 +235,13 @@ function init() {
 	function addToCart() {
 		const bucketItems = JSON.parse(sessionStorage.getItem(storageKey)) || [];
 		const cartItems = JSON.parse(sessionStorage.getItem(cartStorageKey)) || [];
+		if (bucketItems.length === 0) {
+			alert('You must have items in the bucket');
+			return;
+		}
 		sessionStorage.setItem(
 			cartStorageKey,
-			JSON.stringify([...cartItems, ...bucketItems])
+			JSON.stringify([...bucketItems, ...cartItems])
 		);
 		updateDisplayItems(cartStorageKey);
 		clearBucket();
@@ -224,23 +254,57 @@ function init() {
 		sessionStorage.removeItem(cartStorageKey);
 		refreshCart();
 	}
+	function clearBasket() {
+		sessionStorage.removeItem(basketStorageKey);
+		updateDisplayItems(basketStorageKey);
+	}
 	function refreshCart() {
 		updateDisplayItems(cartStorageKey);
 	}
-
+	function addToBasket() {
+		const cartItems = JSON.parse(sessionStorage.getItem(cartStorageKey)) || [];
+		if (cartItems.length === 0) {
+			alert('You must have items in the cart');
+			return;
+		}
+		const basketItems =
+			JSON.parse(sessionStorage.getItem(basketStorageKey)) || [];
+		const countBasketItems = basketItems.length;
+		sessionStorage.setItem(
+			basketStorageKey,
+			JSON.stringify([
+				...basketItems,
+				{ bin: basketItems.length + 1, items: cartItems },
+			])
+		);
+		clearCart();
+		updateDisplayItems(basketStorageKey);
+		updateDisplayItems(cartItems);
+	}
+	function reset() {
+		sessionStorage.clear();
+		window.location.reload();
+	}
 	const searchKey = document.getElementById('searchKey');
 	const searchInput = document.getElementById('searchInput');
 	const addToOrderBtn = document.getElementById('addToOrder');
 	const clearCartBtn = document.getElementById('clearCart');
 	const clearBucketBtn = document.getElementById('clearBucket');
 	const refreshCartBtn = document.getElementById('refreshCart');
+	const addToBasketBtn = document.getElementById('addToBasket');
+	const resetBtn = document.getElementById('reset');
+	const clearBasketBtn = document.getElementById('clearBasket');
 
 	updateDisplayItems(storageKey);
+	updateDisplayItems(cartStorageKey);
+	updateDisplayItems(basketStorageKey);
 	addToOrderBtn.addEventListener('click', addToCart);
 	clearBucketBtn.addEventListener('click', clearBucket);
 	clearCartBtn.addEventListener('click', clearCart);
 	refreshCartBtn.addEventListener('click', refreshCart);
-
+	addToBasketBtn.addEventListener('click', addToBasket);
+	resetBtn.addEventListener('click', reset);
+	clearBasketBtn.addEventListener('click', clearBasket);
 	searchKey.addEventListener('change', updateFilteredItems);
 	searchInput.addEventListener('input', updateFilteredItems);
 }
